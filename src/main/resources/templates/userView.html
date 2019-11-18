@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+</head>
+<body>
+    <h1 shiro:hasPermission="person:query">查询用户</h1>
+    <h1 shiro:hasPermission="person:add">增加用户</h1>
+    <h1 shiro:hasPermission="person:update">更新用户</h1>
+    <h1 shiro:hasPermission="person:delete">删除用户</h1>
+    <h1 shiro:hasPermission="person:export">导出用户</h1>
+</body>
+</html>

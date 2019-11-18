@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    druid:
+      username: root
+      password: zzh3776768
+      url: jdbc:mysql://localhost/shiro?characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+      enable: true
+      stat-view-servlet:
+        enabled: true
+        login-username: shenmeshenqi
+        login-password: zzh3776768
+        url-pattern: /druid/**
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    enabled: true
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations:
+    - classpath:/mapper/*Mapper.xml
+shiro:
+#未登陆时的页面
+  login-url: /index.html
+#  写这个url在浏览器上就会自动登出到loginurl位置
+  login-out: /login/logout
+  anon-urls:
+   - /index.html*
+   - /login/toLogin*
+   - /login/login*
+  authcs:
+  - /**
+  hash-algorithm-name: md5
+  hash-iterations: 2

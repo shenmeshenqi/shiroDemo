@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzh.shirotest.demo.dao.mapper.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.zzh.shirotest.demo.domain.Permission" >
+    <id column="perid" property="perid" jdbcType="INTEGER" />
+    <result column="pername" property="pername" jdbcType="VARCHAR" />
+    <result column="percode" property="percode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    perid, pername, percode
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from permission
+    where perid = #{perid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from permission
+    where perid = #{perid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zzh.shirotest.demo.domain.Permission" >
+    insert into permission (perid, pername, percode
+      )
+    values (#{perid,jdbcType=INTEGER}, #{pername,jdbcType=VARCHAR}, #{percode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zzh.shirotest.demo.domain.Permission" >
+    insert into permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="perid != null" >
+        perid,
+      </if>
+      <if test="pername != null" >
+        pername,
+      </if>
+      <if test="percode != null" >
+        percode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="perid != null" >
+        #{perid,jdbcType=INTEGER},
+      </if>
+      <if test="pername != null" >
+        #{pername,jdbcType=VARCHAR},
+      </if>
+      <if test="percode != null" >
+        #{percode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzh.shirotest.demo.domain.Permission" >
+    update permission
+    <set >
+      <if test="pername != null" >
+        pername = #{pername,jdbcType=VARCHAR},
+      </if>
+      <if test="percode != null" >
+        percode = #{percode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where perid = #{perid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzh.shirotest.demo.domain.Permission" >
+    update permission
+    set pername = #{pername,jdbcType=VARCHAR},
+      percode = #{percode,jdbcType=VARCHAR}
+    where perid = #{perid,jdbcType=INTEGER}
+  </update>
+
+
+  <!--
+  /**
+  * 根据用户名查找用户具有的权限
+  * @param username 用户名不会重复
+  * @return
+  */
+  List<Permission> selectUserPermissionByUsername(String username);-->
+
+  <select id="selectUserPermissionByUsername" resultMap="BaseResultMap">
+    SELECT p.perid,p.pername,p.percode
+    FROM USER u INNER JOIN user_role ur
+    ON u.userid=ur.userid
+    INNER JOIN role_permission rp
+	ON ur.roleid=rp.roleid
+    INNER JOIN permission p
+	ON rp.perid=p.perid
+    WHERE
+    u.username=#{username}
+  </select>
+
+
+  <select id="selectUserPermissionByUserid" resultMap="BaseResultMap">
+    SELECT p.perid,p.pername,p.percode
+    FROM USER u INNER JOIN user_role ur
+    ON u.userid=ur.userid
+    INNER JOIN role_permission rp
+	ON ur.roleid=rp.roleid
+    INNER JOIN permission p
+	ON rp.perid=p.perid
+    WHERE
+    u.userid=#{userid}
+  </select>
+</mapper>
